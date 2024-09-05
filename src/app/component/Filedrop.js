@@ -113,7 +113,7 @@ const Filedrop = ({ urldata }) => {
             >
               Upload
             </button>
-            <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <div className="dropdown-menu dropmenu" aria-labelledby="btnGroupDrop1">
               <a onClick={onButtonClick} className="dropdown-item" href="#">Upload file</a>
             </div>
           </div>
