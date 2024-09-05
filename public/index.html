@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Email Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        #emailError {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="emailForm">
+        <label for="email">Enter your business email:</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            placeholder="Work E-mail*"
+            required
+        />
+        <button type="submit">Submit</button>
+        <p id="emailError">Please enter a valid business email address.</p>
+    </form>
+
+    <script>
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        const form = document.getElementById('emailForm');
+
+        const businessEmailPattern = /^[a-zA-Z0-9._%+-]+@(?!gmail\.com$|outlook\.com$|zoho\.com$|icloud\.com$|yahoo\.com$|rediffmail\.com$)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
+
+        function validateEmail() {
+            if (businessEmailPattern.test(emailInput.value)) {
+                emailError.style.display = 'none';
+                return true;
+            } else {
+                emailError.style.display = 'block';
+                return false;
+            }
+        }
+
+        emailInput.addEventListener('input', validateEmail);
+
+        form.addEventListener('submit', function(e) {
+            if (!validateEmail()) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
