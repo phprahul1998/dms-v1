@@ -66,4 +66,6 @@
   .dropmenu{
     transform: translate3d(0px, 44px, 0px) !important;
   }
-  
+  #mynavbar  li {
+    font-size: 10px ;
+  }
