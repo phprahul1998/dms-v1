@@ -7,7 +7,7 @@ import Filedrop from "../../component/Filedrop";
 import { useSession } from "next-auth/react";
 import { convertSize } from '/utils/common';
 import Link from 'next/link';
-const Folder = ({ params: { slug } }) => {
+const Recents = ({ params: { slug } }) => {
   const [firstParam, secondParam] = slug;
   const { data: session } = useSession();
   const [tabledata, setTableData] = useState([]);
@@ -49,7 +49,7 @@ const Folder = ({ params: { slug } }) => {
         body: JSON.stringify({
           folder_id: folder_id,
           search_text: "",
-          recent: false,
+          recent: true,
         }),
       });
   
@@ -97,7 +97,7 @@ const Folder = ({ params: { slug } }) => {
   <ol className="breadcrumb">
     <li className={`breadcrumb-item ${!folderName ? "active" : "inactive"}`}>
       <a href="/folder/0">
-        <h6>All Files</h6>
+        <h6>All Recents</h6>
       </a>
     </li>
     {folderName && (
@@ -161,4 +161,4 @@ const Folder = ({ params: { slug } }) => {
   );
 };
 
-export default Folder;
+export default Recents;

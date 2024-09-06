@@ -17678,6 +17678,7 @@ ul.iq-contact-rest li a p {
   .fileviewHeader a img{
     width: 100px;
     height: 50px;
+    margin-left: 5px;
   }
   .filePreview{
     background: #f5f5f5;
@@ -17714,3 +17715,33 @@ ul.iq-contact-rest li a p {
   #file-name{
     display: none;
   }
+  .breadcrumb li h6 {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+  .breadcrumb-item {
+    transition: all 0.3s ease-in-out;
+  }
+  .breadcrumb-item h6 {
+    font-size:18px !important
+  }
+  
+  .breadcrumb-item.active h6 {
+    color:#000 !important
+  }
+  
+  .breadcrumb-item.inactive h6 {
+    color: #909090 !important;
+  }
+  
+  .breadcrumb-item+.breadcrumb-item::before {
+    content: "\f104" !important;
+    margin-top: 0px !important;
+    font-size: 15px !important;
+  }
+  
+  /* Remove the arrow content when the first item is active */
+  .breadcrumb-item.active + .breadcrumb-item::before {
+    content: '' !important;
+  }
+  

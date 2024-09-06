@@ -57,7 +57,7 @@ export default function Sidebar(){
                         </ul>
                      </li>
                 <li className={activeItem === '/recents' ? 'selet-caption' : ''}>
-                <Link href="/recents" onClick={() => handleItemClick('/recents')}>
+                <Link href="/recents/0" onClick={() => handleItemClick('/recents')}>
                                 <i className="las la-stopwatch iq-arrow-left"></i><span>Recent</span>
                             </Link>
                         <ul id="page-folders" className="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
