@@ -17745,3 +17745,11 @@ ul.iq-contact-rest li a p {
     content: '' !important;
   }
   
+  .resultdropdown{
+   height: 500px !important;
+   overflow-y: scroll !important;
+  }
+  .resultdropdown li a {
+    color: #000;
+    text-decoration: none !important;
+  }

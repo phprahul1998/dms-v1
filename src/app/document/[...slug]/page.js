@@ -166,12 +166,12 @@ const Folder = ({ params: { slug } }) => {
           <div className='col-md-3 bg-white'>
             <div className='mt-3'>
             <h5>File Properties</h5>
-            <div class="d-flex flex-column">
-            <div class="p-2 ">Name <br/> {fileName}</div>
-            <div class="p-2 ">Description <br/> </div>
-            <div class="p-2 ">File Size <br/> {filesize}</div>
-            <div class="p-2 ">Document type <br/> {documenttype}</div>
-            <div class="p-2 ">Upload date <br/> {upload_date}</div>
+            <div className="d-flex flex-column">
+            <div className="p-2 ">Name <br/> {fileName}</div>
+            <div className="p-2 ">Description <br/> </div>
+            <div className="p-2 ">File Size <br/> {filesize}</div>
+            <div className="p-2 ">Document type <br/> {documenttype}</div>
+            <div className="p-2 ">Upload date <br/> {upload_date}</div>
 
             </div>
             

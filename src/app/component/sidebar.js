@@ -4,14 +4,59 @@ import { useSession } from "next-auth/react";
 import { useEffect,useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import LogoutButton from '../component/LogoutButton';
-export default function Sidebar(){   
+export default function Sidebar({folderId,pageName}){   
     const { data: session } = useSession();
+    let recent='';
+    if(pageName=='recents'){
+        recent=true
+    }else{
+        recent=false
+    }
+    let folder_id = folderId == 0 ? "" : folderId;
     const [username,setUsername] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
+    const [results, setResults] = useState([]);
     const [useremail,setEmail] = useState('')
     const [firstchat,setFirstChar] = useState('')
     const router = usePathname();
     const navigate = useRouter();
     const [activeItem, setActiveItem] = useState('folder/0');
+    const handleInputChange = (event) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+        search(value);
+      };
+    
+      const search = async (term) => {
+        try {
+            const response = await fetch(`${process.env.BASE_URL_ENDPOINT}/api/get_data/?offset=0&page_size=1000000`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session?.token}`,
+              },
+              body: JSON.stringify({
+                folder_id: folder_id,
+                search_text: term,
+                recent: recent
+              }),
+            });
+        
+            const result = await response.json();
+            if (result && result.results && result.results.data && result.results.data) {
+              const filteredResults = result.results.data;
+              setResults(filteredResults);
+             
+            } else {
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } finally {
+             
+          }
+    
+        
+      };
     useEffect(() => {
         if (router === '/') {
             navigate.push('/folder/0');
@@ -150,17 +195,27 @@ export default function Sidebar(){
                         <div className="input-prepend input-append">
                             <div className="btn-group">
                                 <label className="dropdown-toggle searchbox" data-toggle="dropdown">
-                                <input className="dropdown-toggle search-query text search-input" type="text"  placeholder="Type here to search..."/><span className="search-replace"></span>
+                                <input className=" text search-input" type="text"  placeholder="Type here to search..." value={searchTerm} onChange={handleInputChange}/>
                                 <a className="search-link" href="#"><i className="ri-search-line"></i></a>
-                                <span className="caret"></span>
                                 </label>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#"><div className="item"><i className="far fa-file-pdf bg-info"></i>PDFs</div></a></li>
-                                    <li><a href="#"><div className="item"><i className="far fa-file-alt bg-primary"></i>Documents</div></a></li>
-                                    <li><a href="#"><div className="item"><i className="far fa-file-excel bg-success"></i>Spreadsheet</div></a></li>
-                                    <li><a href="#"><div className="item"><i className="far fa-file-powerpoint bg-danger"></i>Presentation</div></a></li>
-                                    <li><a href="#"><div className="item"><i className="far fa-file-image bg-warning"></i>Photos & Images</div></a></li>
-                                    <li><a href="#"><div className="item"><i className="far fa-file-video bg-info"></i>Videos</div></a></li>
+                                <ul className="resultdropdown dropdown-menu">
+                                {
+                                results.map((item, index) => (
+                                    <li  key={index}><div className='item'>
+                                    <img width={20} className='post-load-thumbnail mr-2' src={item.type === 'folder' ? '/folder.png' : item.metadata.file_url} />
+                                    <span>
+                                    <Link href={item.type === 'folder' 
+                                    ? `/folder/${item.id}` 
+                                    : `/${item.type}/${item.id}/${item.metadata.parent_folder_id}`}>
+                                    {item.name}
+                                    </Link>
+                                    </span>
+                                    </div>
+                                    </li>
+                                    ))
+                                
+                                
+                                }
                                 </ul>
                             </div>
                         </div>

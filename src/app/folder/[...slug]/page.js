@@ -86,7 +86,7 @@ const Folder = ({ params: { slug } }) => {
 
   return (
     <div>
-    <Sidebar />
+    <Sidebar folderId={firstParam} pageName ="folder" />
     <div className="content-page">
       <div className="container-fluid">
         <div className="row">
