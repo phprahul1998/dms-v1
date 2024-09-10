@@ -4,6 +4,7 @@ import Sidebar from "../../component/sidebar";
 import Footer from "../../component/footer";
 import Upload from "../../component/Upload";
 import Filedrop from "../../component/Filedrop";
+import ActionBtn from "../../component/ActionBtn";
 import { useSession } from "next-auth/react";
 import { convertSize } from '/utils/common';
 import Link from 'next/link';
@@ -120,7 +121,7 @@ const Folder = ({ params: { slug } }) => {
                 <thead>
                   <tr>
                     <th>Name</th>  
-                    <th>Size</th>                   
+                    <th>Size</th>               
                   </tr>
                 </thead>
                 <tbody>
@@ -136,10 +137,10 @@ const Folder = ({ params: { slug } }) => {
                           </Link>
                         </span>
                       </td>
-                      <td>{item.type === 'folder' ? item.metadata.filecount : convertSize(item.metadata.file_size)}</td>
-                      {/* <td className="action-icon">
-                        <button className="more-button">More</button>
-                      </td> */}
+                      <td className='sizefile'>{item.type === 'folder' ? item.metadata.filecount : convertSize(item.metadata.file_size)}</td>
+                      <div className="action-icon">
+                        <ActionBtn itemid={item.id} itemType={item.type} />
+                      </div>
                     </tr>
                   ))}
                 </tbody>

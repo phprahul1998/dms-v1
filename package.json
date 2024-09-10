@@ -18,7 +18,9 @@
     "react-doc-viewer": "^0.1.14",
     "react-dom": "^18",
     "react-toastify": "^10.0.5",
-    "remixicon": "^4.3.0"
+    "react-tooltip": "^5.28.0",
+    "remixicon": "^4.3.0",
+    "sweetalert2": "^11.14.0"
   },
   "devDependencies": {
     "eslint": "^8",
