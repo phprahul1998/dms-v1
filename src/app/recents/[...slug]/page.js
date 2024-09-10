@@ -18,11 +18,11 @@ const Recents = ({ params: { slug } }) => {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [folderName, setFolderName] = useState('');
   const page_size = 10;
-  const initialFetch = useRef(false);  // Track if the initial fetch has occurred
+  const initialFetch = useRef(false);
 
   useEffect(() => {
     setTableData([]);
-    setIsFirstLoad(true); // Reset to true when slug changes
+    setIsFirstLoad(true);
     setOffset(0);
     setHasMore(true);
   }, [slug]);
@@ -139,8 +139,8 @@ const Recents = ({ params: { slug } }) => {
                         </td>
                         <td className='sizefile'>{item.type === 'folder' ? item.metadata.filecount : convertSize(item.metadata.file_size)}</td>
                         <div className="action-icon">
-                        <ActionBtn itemid={item.id} itemType={item.type} />
-                      </div>
+                          <ActionBtn itemid={item.id} itemType={item.type} />
+                        </div>
                       </tr>
                     ))}
                   </tbody>

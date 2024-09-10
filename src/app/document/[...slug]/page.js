@@ -133,12 +133,11 @@ const Folder = ({ params: { slug } }) => {
 
   return (
     <>
-      <div style={{ width: "100%" }} className="iq-top-navbar">
+      <div style={{ width: "100%" }} className=" iq-top-navbar">
         <div className="iq-navbar-custom">
-          <nav className="navbar navbar-expand-lg navbar-light p-0">
+          <nav className="fileviewheader navbar navbar-expand-lg navbar-light p-0">
             <div className="iq-navbar-logo d-flex align-items-center justify-content-between">
-              <i className="ri-menu-line wrapper-menu"></i>
-              <Link href="/folder/0" className="navbar-brand header-logo iq-navbar-logo">
+              <Link href="/folder/0" className=" navbar-brand header-logo iq-navbar-logo">
                 <img src="/logo2.png" className="img-fluid rounded-normal light-logo" alt="logo" />
               </Link>
               <div className="">

@@ -14985,12 +14985,28 @@ g[aria-describedby="id-22-description"] {
   .flatpickr-current-month {
     left: 7.5%; } }
 
+    @media (max-width: 991px) {
+      .fileviewheader  img {
+          height: 40px;
+          display: none;
+      }
+      .file_details{
+        font-size: 12px !important;
+      }
+      .parent-section {
+        font-size: 10px !important;
+      
+    }
+    .fileviewheader .navbar-collapse{
+      height: auto !important;
+    }
+  }
 @media (max-width: 767px) {
   .table {
     width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
-    display: block;
+    display: table !important;
     overflow-x: auto; }
   .tree {
     display: inline-table; } }
