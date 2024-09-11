@@ -4,6 +4,7 @@ import Sidebar from "../../component/sidebar";
 import Footer from "../../component/footer";
 import Upload from "../../component/Upload";
 import Filedrop from "../../component/Filedrop";
+import Nodatafound from "../../component/Nodatafound";
 import { useSession } from "next-auth/react";
 import ActionBtn from "../../component/ActionBtn";
 import { convertSize } from '/utils/common';
@@ -110,9 +111,7 @@ const Recents = ({ params: { slug } }) => {
                   </nav>
 
                 </div>
-                <div className="header-title">
-                  <Upload urldata={slug} />
-                </div>
+                
               </div>
               {isFirstLoad ? (
                 <div></div>
@@ -147,7 +146,7 @@ const Recents = ({ params: { slug } }) => {
                 </table>
               ) : (
                 !loading &&
-                <Filedrop urldata={slug} />
+                <Nodatafound/>
               )}
 
               {loading && <div>Loading  files...</div>}
