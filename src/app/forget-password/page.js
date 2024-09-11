@@ -21,6 +21,7 @@ const Forgetpassword =()=>{
       e.preventDefault();
       if (resetmail == '') {
         toast.warn('Please Enter Your Registered Email ID.',property);
+        setResetBtn('Reset')
         return;
       }
       
