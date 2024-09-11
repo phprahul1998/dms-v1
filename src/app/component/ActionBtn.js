@@ -7,7 +7,6 @@ import 'react-tooltip/dist/react-tooltip.css'
 import Link from 'next/link';
 import { Tooltip } from 'react-tooltip'
 import Swal from 'sweetalert2'
-
 const ActionBtn = ({ itemid, itemType}) => {
     const { data: session } = useSession();
     const toastProperties = {
@@ -29,8 +28,8 @@ const ActionBtn = ({ itemid, itemType}) => {
             doc_id =itemid;
         }
         Swal.fire({
-            title: "Are you sure want to delete this file ?",
-            icon: "warning",
+            title: "Delete Item",
+            text: "Are you sure you want to delete this item?",
             showCancelButton: true,
             confirmButtonColor: "#0d6efd",
             cancelButtonColor: "#d33",
@@ -53,9 +52,9 @@ const ActionBtn = ({ itemid, itemType}) => {
                   if (response.ok) {
                     const result = await response.json();
                     Swal.fire({
-                        title: "Deleted!",
-                        text: "Data has been deleted.",
-                        icon: "success"
+                        text: "The item has been deleted.",
+                        showConfirmButton: false,
+                        timer: 1500
                       });
                    window.location.reload(); 
                   }else{
@@ -68,7 +67,7 @@ const ActionBtn = ({ itemid, itemType}) => {
     }
     return (
         <>
-<Tooltip id="my-tooltip" />
+            <Tooltip id="my-tooltip" />
             <div className="more-button">
                 <ul>
                     <li className="actionbtn dropdown"  data-tooltip-id="my-tooltip" data-tooltip-content="More options">
