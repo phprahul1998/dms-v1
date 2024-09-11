@@ -2,8 +2,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from "../../component/sidebar";
 import Footer from "../../component/footer";
-import Upload from "../../component/Upload";
-import Filedrop from "../../component/Filedrop";
 import Nodatafound from "../../component/Nodatafound";
 import { useSession } from "next-auth/react";
 import ActionBtn from "../../component/ActionBtn";

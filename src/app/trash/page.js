@@ -4,6 +4,7 @@ import Sidebar from "../component/sidebar";
 import Footer from "../component/footer";
 import { toast } from 'react-toastify';
 import { useSession } from "next-auth/react";
+import Nodatafound from "../component/Nodatafound";
 const Trash = () => {
     const { data: session } = useSession();
     const toastProperties = {
@@ -16,12 +17,14 @@ const Trash = () => {
         progress: 0,
         theme: "colored",
       };
-    const [folderName, setFolderName] = useState('');
     const [recyclebindata, setRecyclebindata] = useState([]);
+    const [folderName, setFolderName] = useState('');
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
     useEffect(() => {
         if (session && session.user) {
             RecycleBindata();
         }
+        setIsFirstLoad(true);
     }, [session]);
     const RecycleBindata = async () => {
         try {
@@ -42,7 +45,7 @@ const Trash = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
-
+            setIsFirstLoad(false)
         }
     }
 
@@ -106,8 +109,11 @@ const Trash = () => {
                                 </div>
 
                             </div>
+                            
                             <div className='row'>
-                                {recyclebindata.length > 0 ? (
+                                {isFirstLoad ? (
+                <div></div>
+              ) : recyclebindata.length > 0 ? (
                                     recyclebindata.map((item, index) => (
                                         <div key={index} className="col-lg-2 col-md-3 col-sm-6">
                                             <div className="card card-block card-stretch card-height">
@@ -137,7 +143,7 @@ const Trash = () => {
                                     ))
 
                                 ) : (
-                                    <small></small>
+                                    <Nodatafound/>
                                 )}
                             </div>
 
