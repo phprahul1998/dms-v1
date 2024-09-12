@@ -17880,3 +17880,24 @@ text-align: left !important;
 .Nodatafound .nodata {
 text-align: center;
 }
+.folderList{
+  height: 40px;
+    left: 0px;
+    position: relative;
+    overflow: hidden;
+    padding-right: 0px;
+    border-top: 1px solid #e8e8e8;
+}
+.folderList img{
+  width: 25px;
+    height: 25px;
+    margin-right: 7px;
+    margin-top: 0px;
+}
+ .folderlistselected{
+  background-color: #ecf4fc;
+    border-top: 1px solid #bfd4df;
+    border-bottom: 1px solid #bfd4df;
+
+    color: #002756;
+}

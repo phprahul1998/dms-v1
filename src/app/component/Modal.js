@@ -43,6 +43,7 @@ const handleSubmit  = async (e) => {
       onClose();
       setbtnLoader('Create')
       setFolderName('')
+      window.location.reload(); 
     } else {
       toast.warn(result.message,property);
       setbtnLoader('Create')

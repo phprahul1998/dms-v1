@@ -5,6 +5,8 @@ import Footer from "../component/footer";
 import { toast } from 'react-toastify';
 import { useSession } from "next-auth/react";
 import Nodatafound from "../component/Nodatafound";
+import Popupbox from "../component/Popupbox";
+import Swal from 'sweetalert2'
 const Trash = () => {
     const { data: session } = useSession();
     const toastProperties = {
@@ -18,7 +20,11 @@ const Trash = () => {
         theme: "colored",
       };
     const [recyclebindata, setRecyclebindata] = useState([]);
+    const [restoreData, setrestoreData] = useState([]);
     const [folderName, setFolderName] = useState('');
+    const [isitfolder,setIsitfolder] =useState();
+    const [getItemId, setItemId] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     useEffect(() => {
         if (session && session.user) {
@@ -47,6 +53,53 @@ const Trash = () => {
         } finally {
             setIsFirstLoad(false)
         }
+    }
+
+    const reStoreItem = async(itemtype,item_id)=>{
+        let doc_id="";
+        let folder_id="";
+        if(itemtype=='folder'){
+            folder_id =item_id;
+        }else{
+            doc_id =item_id;
+        }
+        setItemId(item_id);
+        setIsitfolder(itemtype);
+        Swal.fire({
+            title: "Restore Item",
+            text: "Are you sure you want to restore this item?",
+            showCancelButton: true,
+            confirmButtonColor: "#0d6efd",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch(`${process.env.BASE_URL_ENDPOINT}/api/recycle_bin/restore/`, {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `Bearer ${session.token}`,
+                      'Content-Type': 'application/json',
+                    },
+              
+                    body: JSON.stringify({
+                        "folder_id": folder_id,
+                        "docs_id":doc_id,
+                        "new_folder_id":"",
+                        "restore_option":"",
+                    })
+                  });
+              
+                  if (response.ok) {
+                    const result = await response.json();
+                    RecycleBindata();  
+                    setShowPopup(true);
+                    setrestoreData(result)
+                  }else{
+                    toast.error('Somethings went wrong !', toastProperties);
+                  }
+             
+            }
+          });
     }
 
   
@@ -132,7 +185,7 @@ const Trash = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton001">
                                                                 <a className="dropdown-item" href="#" onClick={() => moveTrash(item.type, item.item_id)}>
                                                                 <i className="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                                    <a className="dropdown-item" href="#"><i className="ri-restart-line mr-2"></i>restore</a>
+                                                                    <a className="dropdown-item" onClick={() => reStoreItem(item.type, item.item_id)} href="#"><i className="ri-restart-line mr-2"></i>restore</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -146,9 +199,9 @@ const Trash = () => {
                                     <Nodatafound/>
                                 )}
                             </div>
-
-
                         </div>
+                        <Popupbox show={showPopup} restoreData={restoreData} itemId={getItemId}  itemType={isitfolder} handleClose={() => setShowPopup(false)} />        
+
                     </div>
                 </div>
             </div>
