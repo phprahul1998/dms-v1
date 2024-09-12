@@ -92,11 +92,11 @@ function Popupbox({ show, restoreData,itemId,itemType, handleClose }) {
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Restoring Item(s)</Modal.Title>
+          <Modal.Title>Restoring Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          
-          <strong>{restoreApiMessage}:</strong><br /><br />
+          <strong>{restoreApiMessage}</strong><br /><br />
           {getFolder?.length > 0 && (
             getFolder.map((item, index) => (
               <div
