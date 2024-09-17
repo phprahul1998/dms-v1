@@ -1,27 +1,43 @@
 "use client"
 import {useEffect, useRef} from 'react';
-import WebViewer from '@pdftron/webviewer';
+import dynamic from 'next/dynamic';
+const WebViewer = dynamic(() => import('@pdftron/webviewer'), {
+  ssr: false,
+});
  const  ESign = () => {
-    const viewerDiv = useRef(null); 
-    const beenInitialised = useRef(false); 
-    useEffect(() => { 
-        if (!beenInitialised.current) { 
-            beenInitialised.current = true; 
-            WebViewer( 
-                {   path: '/public', 
-                    initialDoc: 'https://pdftron.s3.amazonaws.com/downloads/pl/webviewer-demo.pdf', 
-                    licenseKey: 'your_license_key'  
-                }, 
-                viewerDiv.current 
-            ).then(() => {
+  const viewer = useRef(null);
 
-            });
-        }
-    }, []);
+  useEffect(() => {
+    const loadWebViewer = async () => {
+      const WebViewer = (await import('@pdftron/webviewer')).default;
+      if (viewer.current) {
+        WebViewer(
+          {
+            path: '/public',
+            initialDoc: `/document.pdf`,
+            disabledElements: [
+              'viewControlsButton',
+              'viewControlsOverlay',
+              'toolsOverlay',
+              'ribbonsDropdown',
+              'selectToolButton',
+              'panToolButton',
+              'leftPanelButton',
+              'toggleNotesButton',
+              'toolsHeader',
+            ],
+          },
+          viewer.current
+        );
+      }
+    };
+    loadWebViewer();
+  }, []);
 
     return (
-        <div className="MyComponent">
-            <div className='webViewer' ref={viewerDiv} style={{ height: '100vh' }} /> 
+        <div className="">
+          
+            <div className='webViewer' ref={viewer} style={{ height: '100vh' }} /> 
         </div>
     );
 }
