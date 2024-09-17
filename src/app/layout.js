@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body> <SessionProviderWrapper>
           {children}
-        </SessionProviderWrapper><ToastContainer /></body>
+      </SessionProviderWrapper><ToastContainer /></body>
       <Script  src="/js/jquery.min.js"/>
       <Script  src="/js/backend-bundle.min.js" strategy="afterInteractive"/>
       <Script  src="/js/app.js" strategy="afterInteractive"/>
