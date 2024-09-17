@@ -15,17 +15,6 @@ const WebViewer = dynamic(() => import('@pdftron/webviewer'), {
           {
             path: '/public',
             initialDoc: `/document.pdf`,
-            disabledElements: [
-              'viewControlsButton',
-              'viewControlsOverlay',
-              'toolsOverlay',
-              'ribbonsDropdown',
-              'selectToolButton',
-              'panToolButton',
-              'leftPanelButton',
-              'toggleNotesButton',
-              'toolsHeader',
-            ],
           },
           viewer.current
         );
