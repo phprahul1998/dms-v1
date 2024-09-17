@@ -1,0 +1,28 @@
+"use client"
+import {useEffect, useRef} from 'react';
+import WebViewer from '@pdftron/webviewer';
+ const  ESign = () => {
+    const viewerDiv = useRef(null); 
+    const beenInitialised = useRef(false); 
+    useEffect(() => { 
+        if (!beenInitialised.current) { 
+            beenInitialised.current = true; 
+            WebViewer( 
+                {   path: '/public', 
+                    initialDoc: 'https://pdftron.s3.amazonaws.com/downloads/pl/webviewer-demo.pdf', 
+                    licenseKey: 'your_license_key'  
+                }, 
+                viewerDiv.current 
+            ).then(() => {
+
+            });
+        }
+    }, []);
+
+    return (
+        <div className="MyComponent">
+            <div className='webViewer' ref={viewerDiv} style={{ height: '100vh' }} /> 
+        </div>
+    );
+}
+export default ESign
