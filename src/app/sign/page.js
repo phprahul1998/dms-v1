@@ -2,6 +2,7 @@
 import {useEffect, useRef} from 'react';
 import WebViewer from '@pdftron/webviewer'; 
 export default function Sign(){
+    
     const viewerDiv = useRef(null); 
     const beenInitialised = useRef(false); 
     useEffect(() => { 
