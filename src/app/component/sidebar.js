@@ -110,9 +110,9 @@ export default function Sidebar({ folderId, pageName }) {
                             </li>
 
                             <li className=" ">
-                                <a href="../backend/page-favourite.html" className="">
+                            <Link  href="/sign" className="">
                                     <i className="las la-signature"></i><span>Sign</span>
-                                </a>
+                            </Link >
                                 <ul id="page-fevourite" className="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                 </ul>
                             </li>
