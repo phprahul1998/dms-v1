@@ -1,10 +1,10 @@
-import { useState ,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useSession } from "next-auth/react";
 import { toast } from 'react-toastify';
 
-function Popupbox({ show, restoreData,itemId,itemType, handleClose }) {
+function Popupbox({ show, restoreData, itemType, handleClose }) {
   const { data: session } = useSession();
   const toastProperties = {
     position: "top-right",
@@ -17,76 +17,84 @@ function Popupbox({ show, restoreData,itemId,itemType, handleClose }) {
     theme: "colored",
   };
   const [getFolder, setFolderList] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState(null); 
-  const [restoreApiMessage, setrestoreApiMessage] = useState(''); 
-  const [isoriginal_deleted, setISoriginal_deleted] = useState(''); 
-  const [newfolderId, setNewFolderId] = useState(''); 
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [restoreApiMessage, setrestoreApiMessage] = useState('');
+  const [isoriginal_deleted, setISoriginal_deleted] = useState('');
+  const [newfolderId, setNewFolderId] = useState('');
+  const [documentOrFolderId, setDocumentOrFolderId] = useState('');
   const [restoreBtn, setrestoreBtn] = useState('Restore');
-  const [fileId, setFileId] = useState(''); 
-  const [getItemtype, setItemType] = useState(''); 
+  const [getItemtype, setItemType] = useState('');
   useEffect(() => {
+
     if (restoreData) {
       const availableFolders = restoreData.data?.available_folders || [];
       const original_deleted = restoreData.data?.original_deleted
-      setFileId(itemId);
       setItemType(itemType)
+      setDocumentOrFolderId(restoreData.data?.document_id || [])
       setISoriginal_deleted(original_deleted);
       setFolderList(availableFolders);
       setrestoreApiMessage(restoreData.message)
     }
   }, [restoreData]);
-  const handleFolderClick = (folderIndex,itemId) => {
+  const handleFolderClick = (folderIndex, itemId) => {
     setSelectedFolder(folderIndex);
     setNewFolderId(itemId)
   };
-  const finalRestore  = async(e)=>{
+  const finalRestore = async (e) => {
     setrestoreBtn('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="">Restoring...</span>');
-    let restore_option='';
-    let new_folder_id='';
-    let docs_id="";
-        let folder_id="";
-        if(getItemtype=='folder'){
-            folder_id =fileId;
-        }else{
-          docs_id =fileId;
-        }
-    if(isoriginal_deleted==true){
-      restore_option ='new';
-      new_folder_id=newfolderId
-    }else{
-      restore_option='original';
-      new_folder_id=""
+    let restore_option = '';
+    let new_folder_id = '';
+    let docs_id = "";
+    let folder_id = "";
+
+    if (getItemtype == 'folder') {
+      folder_id = documentOrFolderId;
+    } else {
+      docs_id = documentOrFolderId;
     }
-    if(restore_option=='new' && new_folder_id==''){
+    if (isoriginal_deleted == true) {
+      restore_option = 'new';
+      new_folder_id = newfolderId
+    } else {
+      if (newfolderId) {
+        restore_option = 'new';
+        new_folder_id = newfolderId
+      } else {
+        restore_option = 'original';
+        new_folder_id = ''
+      }
+
+    }
+    if (restore_option == 'new' && new_folder_id == '') {
       toast.warning('Please select any folder '
         , toastProperties);
-        setrestoreBtn('Restore')
-    }else{
+      setrestoreBtn('Restore')
+    } else {
       const response = await fetch(`${process.env.BASE_URL_ENDPOINT}/api/recycle_bin/restore/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.token}`,
           'Content-Type': 'application/json',
         },
-  
+
         body: JSON.stringify({
-            "folder_id":folder_id,
-            "docs_id":docs_id,
-            "new_folder_id":new_folder_id,
-            "restore_option":restore_option,
+          "folder_id": folder_id,
+          "docs_id": docs_id,
+          "new_folder_id": new_folder_id,
+          "restore_option": restore_option,
         })
       });
       if (response.ok) {
         const result = await response.json();
-       toast.success(result.message
-        , toastProperties);
-       window.location.reload(); 
-      }else{
+        toast.success(result.message
+          , toastProperties);
+        window.location.reload();
+      } else {
         toast.error('Somethings went wrong !', toastProperties);
         setrestoreBtn('Restore')
       }
     }
-    
+
   }
   return (
     <>
@@ -95,33 +103,39 @@ function Popupbox({ show, restoreData,itemId,itemType, handleClose }) {
           <Modal.Title>Restoring Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         
+
           <strong>{restoreApiMessage}</strong><br /><br />
           {getFolder?.length > 0 && (
             getFolder.map((item, index) => (
-              <div
-              className={`d-flex folderList ${
-                index === selectedFolder ? 'folderlistselected' : ''
-              }`}
-              key={index}
-              onClick={() => handleFolderClick(index,item.id)}>
-                <div className="mr-auto p-2"><img src="/folder.png"/>{item.name}</div>
-                <div className="p-2"><input
-                  type="radio"
-                  name="folderSelection"
-                  checked={index === selectedFolder}
-                  onChange={() => handleFolderClick(index,item.id)}
-                /></div>
-              </div>
+              !item.is_root && ( // Using a simple condition check here
+                <div
+                  className={`d-flex folderList ${index === selectedFolder ? 'folderlistselected' : ''}`}
+                  key={index}
+                  onClick={() => handleFolderClick(index, item.id)}
+                >
+                  <div className="mr-auto p-2">
+                    <img src="/folder.png" alt="Folder" /> {item.name}
+                  </div>
+                  <div className="p-2">
+                    <input
+                      type="radio"
+                      name="folderSelection"
+                      checked={index === selectedFolder}
+                      onChange={() => handleFolderClick(index, item.id)}
+                    />
+                  </div>
+                </div>
+              )
             ))
           )}
-          {getFolder?.length === 0 && <p>No folders available</p>} 
+
+          {getFolder?.length === 0 && <p>No folders available</p>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <button type="submit" className="btn btn-primary mr-2" onClick={finalRestore}  dangerouslySetInnerHTML={{ __html: restoreBtn }} />
+          <button type="submit" className="btn btn-primary mr-2" onClick={finalRestore} dangerouslySetInnerHTML={{ __html: restoreBtn }} />
         </Modal.Footer>
       </Modal>
     </>

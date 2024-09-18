@@ -14,7 +14,7 @@ const WebViewer = dynamic(() => import('@pdftron/webviewer'), {
         WebViewer(
           {
             path: '/public',
-            initialDoc: `/document.pdf`,
+            initialDoc: ``,
           },
           viewer.current
         );

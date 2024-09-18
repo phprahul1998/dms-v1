@@ -17662,6 +17662,7 @@ ul.iq-contact-rest li a p {
     cursor: pointer;
     position: absolute;
     right: 31px;
+    top: 0;
   }
   .more-button ul{
     margin-bottom: 0px !important;
@@ -17898,6 +17899,20 @@ text-align: center;
   background-color: #ecf4fc;
     border-top: 1px solid #bfd4df;
     border-bottom: 1px solid #bfd4df;
-
     color: #002756;
+}
+.sign  {
+  background-color: #0061d5;
+  padding: 10px;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+.sign a  {
+ 
+  text-align: center;
+}
+.sign a  i {
+  font-size: 28px;
+  color: #fff ;
+  text-align: center;
 }

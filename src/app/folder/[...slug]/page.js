@@ -121,7 +121,8 @@ const Folder = ({ params: { slug } }) => {
                 <thead>
                   <tr>
                     <th>Name</th>  
-                    <th>Size</th>               
+                    <th>Size</th>  
+                    <th></th>             
                   </tr>
                 </thead>
                 <tbody>
@@ -138,9 +139,9 @@ const Folder = ({ params: { slug } }) => {
                         </span>
                       </td>
                       <td className='sizefile'>{item.type === 'folder' ? item.metadata.filecount : convertSize(item.metadata.file_size)}</td>
-                      <div className="action-icon">
+                      <td><div className="action-icon">
                         <ActionBtn itemid={item.id} itemType={item.type} />
-                      </div>
+                      </div></td>
                     </tr>
                   ))}
                 </tbody>

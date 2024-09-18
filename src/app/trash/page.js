@@ -183,8 +183,8 @@ const Trash = () => {
                                                                     <i className="ri-more-2-fill"></i>
                                                                 </span>
                                                                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton001">
-                                                                <a className="dropdown-item" href="#" onClick={() => moveTrash(item.type, item.item_id)}>
-                                                                <i className="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                                                {/* <a className="dropdown-item" href="#" onClick={() => moveTrash(item.type, item.item_id)}>
+                                                                <i className="ri-delete-bin-6-fill mr-2"></i>Delete</a> */}
                                                                     <a className="dropdown-item" onClick={() => reStoreItem(item.type, item.item_id)} href="#"><i className="ri-restart-line mr-2"></i>restore</a>
                                                                 </div>
                                                             </div>
@@ -200,7 +200,7 @@ const Trash = () => {
                                 )}
                             </div>
                         </div>
-                        <Popupbox show={showPopup} restoreData={restoreData} itemId={getItemId}  itemType={isitfolder} handleClose={() => setShowPopup(false)} />        
+                        <Popupbox show={showPopup} restoreData={restoreData}   itemType={isitfolder} handleClose={() => setShowPopup(false)} />        
 
                     </div>
                 </div>
