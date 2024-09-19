@@ -83,18 +83,18 @@ const ActionBtn = ({ itemid, itemType}) => {
                             className="dropdown-menu dropdown-menu-right"
                             aria-labelledby="dropdownMenuButton5"
                         >
-                            <Link className="dropdown-item" href="#">
+                            {/* <Link className="dropdown-item" href="#">
                             <i className="ri-file-download-fill mr-2"></i>Download
-                            </Link>
+                            </Link> */}
                             <Link onClick={moveTrash} className="dropdown-item" href="#">
                                 <i className="ri-delete-bin-6-fill mr-2"></i>Trash
                             </Link>
                             
                         </div>
                     </li>
-                    <li  data-tooltip-id="my-tooltip" data-tooltip-content="Add to collection"><i className="las la-star"></i></li>
+                    {/* <li  data-tooltip-id="my-tooltip" data-tooltip-content="Add to collection"><i className="las la-star"></i></li>
                     <li data-tooltip-id="my-tooltip" data-tooltip-content="Copy Shared Link"><i className="las la-link"></i></li>
-                    <li data-tooltip-id="my-tooltip" data-tooltip-content="Share"><i className="las la-share-square"></i></li>
+                    <li data-tooltip-id="my-tooltip" data-tooltip-content="Share"><i className="las la-share-square"></i></li> */}
                 </ul>
             </div>
 
