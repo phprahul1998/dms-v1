@@ -21,13 +21,13 @@ const Allsign = ({ handleDragStart }) => {
         { id: 6, fontFamily: 'Pacifico, cursive' },
         { id: 7, fontFamily: 'Satisfy, cursive' },
         { id: 8, fontFamily: 'Great Vibes, cursive' },
-      ];
+    ];
     const [name, setName] = useState('Your Name');
     const [selectedColor, setSelectedColor] = useState('#FF0000');
     const [selectedFont, setSelectedFont] = useState(fonts[0].fontFamily);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
+
 
     const availableSignatures = [
         { id: 1, src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_5WzhSyQHRKmDj4BwcyqL3yZVadRwfAkBpQ&s', width: 100, height: 50 }, // Example image
@@ -49,16 +49,16 @@ const Allsign = ({ handleDragStart }) => {
     };
     const handleNameChange = (e) => {
         setName(e.target.value);
-      };
-    
-      const handleColorChange = (e) => {
+    };
+
+    const handleColorChange = (e) => {
         setSelectedColor(e.target.value);
-      };
-    
-      const handleFontSelect = (font) => {
+    };
+
+    const handleFontSelect = (font) => {
         setSelectedFont(font.fontFamily);
-      };
-    
+    };
+
     return (
         <>
             <div className='row'>
@@ -138,53 +138,53 @@ const Allsign = ({ handleDragStart }) => {
                                     value={penColor}
                                     onChange={(e) => setPenColor(e.target.value)}
                                 />
-                               <div style={{float:'right'}}>
-                               <button className='btn btn-secondary btn-sm mr-2' onClick={clearSignature}>Clear</button>
-                                <button className='btn btn-primary btn-sm' onClick={saveSignature}>Adopt</button>
-                               </div>
+                                <div style={{ float: 'right' }}>
+                                    <button className='btn btn-secondary btn-sm mr-2' onClick={clearSignature}>Clear</button>
+                                    <button className='btn btn-primary btn-sm' onClick={saveSignature}>Adopt</button>
+                                </div>
                             </div>
 
                         </Tab>
                         <Tab eventKey="Type" title="Type">
-      
-      <label htmlFor="fullName">Your Full Name: <input
-          type="color"
-          id="colorPicker"
-          value={selectedColor}
-          onChange={handleColorChange}
-        /></label>
-      <input
-        type="text"
-        id="fullName"
-        className='form-control mb-4'
-        value={name}
-        onChange={handleNameChange}
-        placeholder="Enter your full name"
-      />
-    
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-        {fonts.map((font) => (
-          <div
-            key={font.id}
-            onClick={() => handleFontSelect(font)}
-            style={{
-              fontFamily: font.fontFamily,
-              color: selectedColor,
-              padding: '10px',
-              border: selectedFont === font.fontFamily ? '2px solid blue' : '1px solid gray',
-              cursor: 'pointer',
-              textAlign: 'center',
-            }}
-          >
-            {name}
-          </div>
-        ))}
-      </div>
 
-      <div style={{float:'right'}}>
-                               <button className='btn btn-secondary btn-sm mr-2' onClick={clearSignature}>Clear</button>
+                            <label htmlFor="fullName">Your Full Name: <input
+                                type="color"
+                                id="colorPicker"
+                                value={selectedColor}
+                                onChange={handleColorChange}
+                            /></label>
+                            <input
+                                type="text"
+                                id="fullName"
+                                className='form-control mb-4'
+                                value={name}
+                                onChange={handleNameChange}
+                                placeholder="Enter your full name"
+                            />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                                {fonts.map((font) => (
+                                    <div
+                                        key={font.id}
+                                        onClick={() => handleFontSelect(font)}
+                                        style={{
+                                            fontFamily: font.fontFamily,
+                                            color: selectedColor,
+                                            padding: '10px',
+                                            border: selectedFont === font.fontFamily ? '2px solid blue' : '1px solid gray',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        {name}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div style={{ float: 'right' }}>
+                                <button className='btn btn-secondary btn-sm mr-2' onClick={clearSignature}>Clear</button>
                                 <button className='btn btn-primary btn-sm' onClick={saveSignature}>Adopt</button>
-                               </div>
+                            </div>
                         </Tab>
                         <Tab eventKey="upload" title="Upload">
                             Upload
