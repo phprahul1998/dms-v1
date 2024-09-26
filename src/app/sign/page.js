@@ -1,137 +1,16 @@
-"use client";
-import React, { useState, useRef, useEffect } from "react";
-import { PDFDocument, rgb } from "pdf-lib";
+"use client"
+import React, { useState, useRef } from "react";
 import Link from "next/link";
-import '../assets/css/sign.css'
-import Allsign from '../component/Allsign'
+import Allsign from '../component/Allsign';
+import PDFViewer from '../component/PDFViewer';
+import "../assets/css/sign.css";
 const Sign = () => {
-  const [pdfUrl, setPdfUrl] = useState(null);
-  const [draggedSignature, setDraggedSignature] = useState(null);
-  const [signatures, setSignatures] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [scale, setScale] = useState(1);
-  const [key, setKey] = useState(0); // For re-rendering
-  const containerRef = useRef(null);
-  const canvasRef = useRef(null);
-  const iframeRef = useRef(null);
-
-  // Replace the text signatures with image URLs or base64 data URIs
-
-
-  useEffect(() => {
-    loadPdf();
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current && canvasRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect();
-        canvasRef.current.width = width;
-        canvasRef.current.height = height;
-        setScale(width / 612);
-        drawSignatures();
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, [signatures, currentPage]);
-
-  async function loadPdf() {
-    const url = "/document.pdf";
-    const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    setTotalPages(pdfDoc.getPageCount());
-    const pdfBlob = new Blob([existingPdfBytes], { type: "application/pdf" });
-    const initialPdfUrl = URL.createObjectURL(pdfBlob);
-    setPdfUrl(initialPdfUrl);
-  }
-
-  const drawSignatures = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    signatures
-      .filter(sig => sig.page === currentPage)
-      .forEach(({ img, x, y, width, height }) => {
-        const image = new Image();
-        image.src = img;
-        image.onload = () => {
-          ctx.drawImage(image, x * scale, y * scale, width * scale, height * scale);
-        };
-      });
+  const [adoptimg,setAdoptImage] = useState('')
+  const handleAdoptSignature = (signData) => {
+    setAdoptImage(signData)
   };
 
-  const handleDragStart = (signature, e) => {
-    setDraggedSignature(signature);
-    e.dataTransfer.setData('image/png', signature.src);
-  };
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (!draggedSignature) return;
-
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / scale;
-    const y = (event.clientY - rect.top) / scale;
-    setSignatures(prev => [
-      ...prev, 
-      { 
-        img: draggedSignature.src, 
-        x, 
-        y, 
-        page: currentPage, 
-        width: draggedSignature.width, 
-        height: draggedSignature.height 
-      }
-    ]);
-    setDraggedSignature(null);
-    drawSignatures();
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-      setKey(prevKey => prevKey + 1);
-    }
-  };
-
-  async function savePdf() {
-    const url = "/document.pdf";
-    const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const pages = pdfDoc.getPages();
-    for (const { img, x, y, page, width, height } of signatures) {
-      const pageObj = pages[page - 1];
-      const { height: pdfHeight } = pageObj.getSize();
-      const imgBytes = await fetch(img).then((res) => res.arrayBuffer());
-      const pdfImage = await pdfDoc.embedPng(imgBytes);
-      
-      pageObj.drawImage(pdfImage, {
-        x,
-        y: pdfHeight - y - height, // Adjust to PDF coordinate system
-        width,
-        height,
-      });
-    }
-
-    const pdfBytes = await pdfDoc.save();
-    const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
-    const savedPdfUrl = URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-    link.href = savedPdfUrl;
-    link.download = 'signed_document.pdf';
-    link.click();
-  }
+ 
 
   return (
     <>
@@ -166,63 +45,53 @@ const Sign = () => {
                 </Link>
               </div>
             </div>
+            <div className="d-flex align-items-center">
+              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+                <i className="ri-menu-3-line"></i>
+              </button>
+              <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="navbar-nav ml-auto navbar-list align-items-center">
+                  {/* <li className="nav-item nav-icon dropdown mr-2">
+                    <button className="btn btn-outline-primary  search-toggle dropdown-toggle " id="dropdownMenuButton01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i className="las la-ellipsis-h"></i>
+                    </button>
+                    <div className="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton01">
+                      <div className="card shadow-none m-0">
+                        <div className="card-body p-0 ">
+                          <div className="p-3">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li> */}
+                
+                  <li className=" nav-item mr-2">
+                    <button data-tooltip-id="share"
+                      data-tooltip-content="Share"
+                       className='btn  btn-primary'>Sign & Finish</button>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
           </nav>
         </div>
       </div>
+
       <div className="container-fluid Esign">
         <div className="row">
-        <div className="col-md-9 iframe-wrapper" ref={containerRef} style={{ position: 'relative', height: '80vh' }}>
-        {pdfUrl && (
-              <iframe 
-                key={key} 
-                ref={iframeRef}
-                src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&page=${currentPage}&zoom=${scale * 27}`}
-                width="100%"
-                height="100%"
-                style={{
-                  border: 'none',
-                  overflow: 'hidden', 
-                  height: '100%', 
-                }}
-                title="PDF Document"
-              />
-            )}
-            <canvas
-              ref={canvasRef}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-              }}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-            />
+          <div className="col-md-9 p-0" style={{ position: "relative" }}>
+            <PDFViewer signAdoptImage={adoptimg}/>
           </div>
-          <div className="col-md-3">
-            <h5>Signatures</h5>
-            <Allsign handleDragStart={handleDragStart}/>
-            
-            {/* <div className="mt-3">
-              <button className="btn btn-sm btn-primary" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-              <span> Page {currentPage} of {totalPages} </span>
-              <button  className="btn btn-sm btn-primary" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
-            </div>
-            <button
- onClick={savePdf} className="btn btn-primary mt-3">Save PDF</button> */}
+          <div className="col-md-3 bg-white SignaturesType ">
+            <div className="">
+            <h5 className="mt-4">Signatures</h5>
+            <Allsign onAdoptSignature={handleAdoptSignature} />
+            </div>  
+          </div>
         </div>
       </div>
-    </div>
-   </>
+    </>
   );
 };
 
