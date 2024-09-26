@@ -124,7 +124,9 @@ const Recents = ({ params: { slug } }) => {
                   </thead>
                   <tbody>
                     {tabledata.map((item, index) => (
-                      <tr key={index} className="table-row">
+                      <tr key={index} className="table-row" onClick={() => window.location.href = item.type === 'folder' 
+                        ? `/folder/${item.id}` 
+                        : `/${item.type}/${item.id}/${item.metadata.parent_folder_id}`}>
                         <td>
                           <img className='post-load-thumbnail' src={item.type === 'folder' ? '/folder.png' : item.metadata.file_url} />
                           <span>

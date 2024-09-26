@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
 import "../assets/css/pdfviewer.css";
-
-const PDFViewer = ({ signAdoptImage }) => {
+import { toast } from 'react-toastify';
+import Allpdffile from '../component/Allpdffile'
+const PDFViewer = forwardRef(({ signAdoptImage }, ref) => {
   const pdfContainerRef = useRef(null);
   const pdfCanvasRef = useRef(null);
   const draggableImageRef = useRef(null);
@@ -17,7 +18,18 @@ const PDFViewer = ({ signAdoptImage }) => {
   const [imgY, setImgY] = useState(0);
   const [imagePositions, setImagePositions] = useState({});
   const [isPdfUploaded, setIsPdfUploaded] = useState(false);
-  const [fileName ,setFileName] = useState('')
+  const [fileName, setFileName] = useState('')
+  const [showPopup, setShowPopup] = useState(false);
+  const property = {
+    position: "top-right",
+    autoClose: 800,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: 0,
+    theme: "colored",
+  }
 
   useEffect(() => {
     if (pdfDoc) {
@@ -32,8 +44,14 @@ const PDFViewer = ({ signAdoptImage }) => {
     }
   }, [signAdoptImage]);
 
+  useImperativeHandle(ref, () => ({
+    savePdf: handleSavePdf
+  }));
+
   const onButtonClick = () => {
-    uploadPdfRef.current.click();
+    if (uploadPdfRef.current) {
+      uploadPdfRef.current.click();
+    }
   };
 
   const handlePdfUpload = async (event) => {
@@ -106,12 +124,10 @@ const PDFViewer = ({ signAdoptImage }) => {
 
   const handleSavePdf = async () => {
     if (!pdfDoc) {
-      alert('Please upload a PDF.');
+      toast.warn('Please Upload or Select file',property);
       return;
     }
-
     saveCurrentPageImagePosition();
-
     for (let i = 1; i <= pageCount; i++) {
       if (!imagePositions[i]) continue;
 
@@ -135,8 +151,8 @@ const PDFViewer = ({ signAdoptImage }) => {
     link.href = URL.createObjectURL(blob);
     link.download = 'modified.pdf';
     link.click();
-  };
 
+  };
   const saveCurrentPageImagePosition = () => {
     if (draggableImageRef.current.style.display !== 'none') {
       setImagePositions((prev) => ({
@@ -145,6 +161,9 @@ const PDFViewer = ({ signAdoptImage }) => {
       }));
     }
   };
+  const getAllpdf =()=>{
+    setShowPopup(true)
+  }
 
   return (
     <>
@@ -152,10 +171,9 @@ const PDFViewer = ({ signAdoptImage }) => {
         <div className='p-container'>
           <div className='dropFIle'>
             <h1>Choose or Upload a Document</h1>
-            <p>choose a file from  <span onClick={onButtonClick}> your desktop</span> or <span onClick={onButtonClick}>
-              file from Box
+            <p>choose a file from  <span onClick={onButtonClick}> your desktop</span> or <span onClick={getAllpdf}>
+              file from SoftDocs
             </span>.</p>
-
             <div className='file-picker-box' role="group">
               <i
                 id="btnGroupDrop1"
@@ -166,12 +184,13 @@ const PDFViewer = ({ signAdoptImage }) => {
                 className="las la-plus-circle"
               ></i>
               <div className="dropdown-menu dropmenu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Choose from SoftDocs</a>
+                <a className="dropdown-item" href="#" onClick={getAllpdf}>Choose from SoftDocs</a>
                 <a className="dropdown-item" href="#" onClick={onButtonClick}>
                   Upload file
                 </a>
               </div>
             </div>
+
           </div>
         </div>
       ) : (
@@ -190,7 +209,20 @@ const PDFViewer = ({ signAdoptImage }) => {
                   <button className='btn btn-sm btn-secondary' onClick={handleNextPage} disabled={!isPdfUploaded}>
                     <i className="las la-caret-square-right"></i>
                   </button>
+                  <button role="group" className='ml-4 btn btn-sm btn-secondary dropdown-toggle' id="btnGroupDrop1"
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">Replace</button>
+                  <div className="dropdown-menu dropmenu" aria-labelledby="btnGroupDrop1">
+                    <a className="dropdown-item" href="#">Choose from SoftDocs</a>
+                    <a className="dropdown-item" href="#" onClick={onButtonClick}>
+                      Upload file
+                    </a>
+                  </div>
+
                 </div>
+
               </div>
 
             </div>
@@ -222,12 +254,17 @@ const PDFViewer = ({ signAdoptImage }) => {
           </div>
         </div>
       )}
-      <input style={{ display: 'none' }} type="file" ref={uploadPdfRef} onChange={handlePdfUpload} accept="application/pdf" />
-      <button onClick={handleSavePdf} >
-  Save PDF
-</button>
+      <input
+        type="file"
+        ref={uploadPdfRef}
+        onChange={handlePdfUpload}
+        accept=".pdf"
+        style={{ display: 'none' }}
+      />
+      {/* <Allpdffile show={showPopup} handleClose={() => setShowPopup(false)}  />         */}
+
     </>
   );
-};
+});
 
 export default PDFViewer;

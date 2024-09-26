@@ -6,11 +6,15 @@ import PDFViewer from '../component/PDFViewer';
 import "../assets/css/sign.css";
 const Sign = () => {
   const [adoptimg,setAdoptImage] = useState('')
+  const pdfViewerRef = useRef();
   const handleAdoptSignature = (signData) => {
     setAdoptImage(signData)
   };
-
- 
+  const handleSavePdf = () => {
+    if (pdfViewerRef.current) {
+      pdfViewerRef.current.savePdf();
+    }
+  };
 
   return (
     <>
@@ -66,11 +70,9 @@ const Sign = () => {
                   </li> */}
                 
                   <li className=" nav-item mr-2">
-                    <button data-tooltip-id="share"
-                      data-tooltip-content="Share"
-                       className='btn  btn-primary'>Sign & Finish</button>
+                  <button onClick={handleSavePdf}
+                   className='btn btn-primary'>Sign & Finish</button>
                   </li>
-                  
                 </ul>
               </div>
             </div>
@@ -81,7 +83,7 @@ const Sign = () => {
       <div className="container-fluid Esign">
         <div className="row">
           <div className="col-md-9 p-0" style={{ position: "relative" }}>
-            <PDFViewer signAdoptImage={adoptimg}/>
+            <PDFViewer signAdoptImage={adoptimg} ref={pdfViewerRef}  />
           </div>
           <div className="col-md-3 bg-white SignaturesType ">
             <div className="">
