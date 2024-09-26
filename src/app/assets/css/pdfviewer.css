@@ -1,0 +1,102 @@
+#pdf-container {
+    position: relative;
+    overflow: auto; 
+    
+}
+#pdf-canvas {
+    display: block;
+    margin: 0 auto;
+    height: 120vh !important;
+    width: 70%  !important;
+   
+}
+.draggable {
+    position: absolute;
+    width: 100px;
+    cursor: move;
+    display: none; /* Hide by default until an image is uploaded */
+    z-index: 1;
+}
+#pageInfo{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.filenamesection .file i{
+    font-size: 25px;
+    color: #d0021b;
+
+}
+.filenamesection .file span{
+    font-size: 15px;
+    top: 40px;
+    font-weight: 500;
+
+}
+#controls {
+    width: 70%  !important;
+    background: #fbfbfb;
+    border: 1px solid #e8e8e8;
+    border-bottom-color: #f4f4f4;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .08);
+    height: 48px;
+    margin-top: 20px;
+    margin: auto;
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+}
+.p-container{
+    display: inline-block;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    touch-action: pan-y pan-x;
+    width: 100%;
+    background-color: #ededed;
+    display: inline-block;
+    min-height: 100%;
+    min-width: 100%;
+}
+.p-container .dropFIle{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px);
+    justify-content: center;
+    width: 100%;
+}
+.p-container .dropFIle p{
+    color: #767676 !important;
+    caret-color: #767676 !important;
+}
+.p-container .dropFIle p span{
+    color: #0061d5  !important;
+    cursor: pointer;
+}
+.p-container .dropFIle h1{
+    font-size: 22px;
+    font-weight: 700;
+}
+.file-picker-box{
+    align-items: center;
+    background-color: rgba(229, 239, 250, .4);
+    border: 1px dashed #b2cff2;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 60vh);
+    width: calc(100vh - 70vh);
+    z-index: 1;
+}
+.file-picker-box i {
+    display: block;
+    font-size: 40px;
+    height: 1em;
+    min-width: 1em;
+    width: 1em;
+    color: #0061d5  !important;
+}
+
+.p-container .dropFIle .dropdown-menu .dropdown-item{
+    font-size: 14px;
+}
+
